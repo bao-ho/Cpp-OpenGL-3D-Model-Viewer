@@ -1,0 +1,10 @@
+﻿  Application.cpp
+C:\Dev\OpenGL_Lighting\OpenGL_1\OpenGL_1\src\Application.cpp(110,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Dev\OpenGL_Lighting\OpenGL_1\OpenGL_1\src\Application.cpp(149,21): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Dev\OpenGL_Lighting\OpenGL_1\OpenGL_1\src\Application.cpp(150,21): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Dev\OpenGL_Lighting\OpenGL_1\OpenGL_1\src\Application.cpp(153,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Dev\OpenGL_Lighting\OpenGL_1\OpenGL_1\src\Application.cpp(154,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Dev\OpenGL_Lighting\OpenGL_1\OpenGL_1\src\Application.cpp(155,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Dev\OpenGL_Lighting\OpenGL_1\OpenGL_1\src\Application.cpp(156,17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Dev\OpenGL_Lighting\OpenGL_1\OpenGL_1\src\Application.cpp(170,22): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+  OpenGL_1.vcxproj -> C:\Dev\OpenGL_Lighting\OpenGL_1\Debug\OpenGL_1.exe
