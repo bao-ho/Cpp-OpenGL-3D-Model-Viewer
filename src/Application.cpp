@@ -88,14 +88,17 @@ int main(void)
     float lastFrame, currentFrame = 0.0f, frameDuration;
 
 
-    glm::vec3 cubePositions[] = 
+    /*glm::vec3 cubePositions[] = 
     {
         glm::vec3(0.0f,  0.0f,  0.0f),
         glm::vec3(3.0f,  0.0f,  0.0f),
         glm::vec3(0.0f,  3.0f,  0.0f),
         glm::vec3(0.0f,  0.0f,  3.0f),
         glm::vec3(3.0f,  3.0f,  3.0f)
-    };
+    };*/
+
+
+    auto [cubePositions, sizeOfCubePositions] = parseFloatArrayFromString("resources/data/hard_coded_data.txt", "cubePositions");
     glfwSetCursorPosCallback(window, mouseCursorCallback);
     glfwSetScrollCallback(window, mouseScrollCallback);
     // tell GLFW to capture our mouse
@@ -125,9 +128,9 @@ int main(void)
         view = glm::lookAt(camPos, camPos+camFront, upVector);
         glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE, glm::value_ptr(view));
                
-        for (unsigned int i = 0; i < sizeof(cubePositions) / sizeof(cubePositions[0]); i++)
+        for (unsigned int i = 0; i < sizeOfCubePositions/sizeof(cubePositions[0]); i++)
         {
-            model = glm::translate(glm::mat4(1.0f), cubePositions[i]);
+            model = glm::translate(glm::mat4(1.0f), glm::vec3(cubePositions[i*3], cubePositions[i*3+1], cubePositions[i*3+2]));
             glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_FALSE, glm::value_ptr(model)); 
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
@@ -138,6 +141,7 @@ int main(void)
         /* Poll for and process events */
         glfwPollEvents();
     }
+    delete[] cubePositions;
     glfwTerminate();
     return 0;
 }

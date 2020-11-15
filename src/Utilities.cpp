@@ -8,7 +8,7 @@ std::string readTextFromFile(const std::string& fileName, const std::string& beg
 {
     std::string line;
     std::string resultString;
-    bool startCopying = true;
+    bool startCopying = false;
     std::ifstream inputFileStream(fileName);
     if (inputFileStream.is_open())
     {
@@ -32,7 +32,7 @@ std::tuple <float*, unsigned int> parseFloatArrayFromString(const std::string& f
     unsigned int count = std::count(dataAsString.begin(), dataAsString.end(), '.');
     float* array = new float[count];
     std::stringstream stringStream(dataAsString);
-    for (int i = 0; i < count; i++)
+    for (unsigned int i = 0; i < count; i++)
         stringStream >> array[i];
     return {array, count*sizeof(float)};
 }
