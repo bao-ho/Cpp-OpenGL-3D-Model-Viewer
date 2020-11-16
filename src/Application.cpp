@@ -9,7 +9,8 @@
 
 #include "Shader.h"
 #include "Utilities.h"
-#include "Texture.h"
+//#include "Texture.h"
+#include "Model.h"
 
 #define WINDOW_WIDTH 960
 #define WINDOW_HEIGHT 960
@@ -25,6 +26,10 @@ float pitch = 0.0f;
 float yaw = -90.0f;
 bool firstMouse = true;
 
+float modelXZAngle = 0;
+float modelYZAngle = 0;
+float modelXYAngle = 0;
+
 void mouseCursorCallback(GLFWwindow* window, double xpos, double ypos);
 void mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 
@@ -35,7 +40,7 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Hello World", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "3D Model Viewer - Bao Ho - 2020", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -70,11 +75,12 @@ int main(void)
 
     unsigned int shader = createShader("resources/shaders/vertex_and_fragment.shader");
     glUseProgram(shader);
-    Texture container("resources/images/container.jpg", 0);
-    container.bindToShader(shader, "texture0"); 
-    Texture smileyFace("resources/images/awesomeface.png", 1);
-    smileyFace.bindToShader(shader, "texture1");
-    glm::mat4 model(1.0f);
+    Model backPackModel(std::string("resources/3D_models/knottedgun/model.obj"));
+    //Texture container("resources/images/container.jpg", 0);
+    //container.bindToShader(shader, "texture0"); 
+    //Texture smileyFace("resources/images/awesomeface.png", 1);
+    //smileyFace.bindToShader(shader, "texture1");
+    //glm::mat4 model(1.0f);
     glm::mat4 view(1.0f);
     glm::mat4 projection(1.0f);
 
@@ -86,16 +92,6 @@ int main(void)
     glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE, glm::value_ptr(view));
     float camSpeed = 0.01f;
     float lastFrame, currentFrame = 0.0f, frameDuration;
-
-
-    /*glm::vec3 cubePositions[] = 
-    {
-        glm::vec3(0.0f,  0.0f,  0.0f),
-        glm::vec3(3.0f,  0.0f,  0.0f),
-        glm::vec3(0.0f,  3.0f,  0.0f),
-        glm::vec3(0.0f,  0.0f,  3.0f),
-        glm::vec3(3.0f,  3.0f,  3.0f)
-    };*/
 
 
     auto [cubePositions, sizeOfCubePositions] = parseFloatArrayFromString("resources/data/hard_coded_data.txt", "cubePositions");
@@ -127,15 +123,35 @@ int main(void)
             camPos += camSpeed * glm::normalize(glm::cross(camFront, camUp));
         view = glm::lookAt(camPos, camPos+camFront, upVector);
         glUniformMatrix4fv(glGetUniformLocation(shader, "view"), 1, GL_FALSE, glm::value_ptr(view));
+
                
-        for (unsigned int i = 0; i < sizeOfCubePositions/sizeof(cubePositions[0]); i++)
+ /*       for (unsigned int i = 0; i < sizeOfCubePositions/sizeof(cubePositions[0]); i++)
         {
             model = glm::translate(glm::mat4(1.0f), glm::vec3(cubePositions[i*3], cubePositions[i*3+1], cubePositions[i*3+2]));
             glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_FALSE, glm::value_ptr(model)); 
             glDrawArrays(GL_TRIANGLES, 0, 36);
-        }
+        }*/
         projection = glm::perspective(glm::radians(fov), float(WINDOW_WIDTH / WINDOW_HEIGHT), 0.1f, 100.0f);
         glUniformMatrix4fv(glGetUniformLocation(shader, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+        // render the loaded model
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+
+
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            modelXZAngle += 0.1f;
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            modelXZAngle -= 0.1f;
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            modelXYAngle += 0.1f;
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            modelXYAngle -= 0.1f;
+        model = glm::rotate(model, glm::radians(modelXZAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(modelXYAngle), glm::vec3(0.0f, 0.0f, 1.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        backPackModel.Draw(shader);
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
         /* Poll for and process events */

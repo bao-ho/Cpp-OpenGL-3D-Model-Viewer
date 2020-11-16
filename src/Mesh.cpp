@@ -19,9 +19,9 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 	glEnableVertexAttribArray(0);//Position
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vertex), (void*)0);
 	glEnableVertexAttribArray(1);//Normal
-	glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(Vertex), (void*)offsetof(Vertex, Normal);
+	glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
 	glEnableVertexAttribArray(2);//TextureCoordinates
-	glVertexAttribPointer(2, 2, GL_FLOAT, false, sizeof(Vertex), (void*)offsetof(Vertex, TextureCoordinates);
+	glVertexAttribPointer(2, 2, GL_FLOAT, false, sizeof(Vertex), (void*)offsetof(Vertex, TextureCoordinates));
 	glEnableVertexAttribArray(3);//Tangent
 	glVertexAttribPointer(3, 3, GL_FLOAT, false, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
 	glEnableVertexAttribArray(4);//Bitangent
@@ -56,7 +56,7 @@ void Mesh::Draw(unsigned int shaderID)
 		glBindTexture(GL_TEXTURE_2D, textures[i].ID);
 	}
 	glBindVertexArray(vertexArrayID);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSINGED_INT, 0);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(vertexArrayID);
 
 	glActiveTexture(0);

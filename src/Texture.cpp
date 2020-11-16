@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 #include <string>
 
-Texture::Texture(const char* path, unsigned int slot) 
+MyTexture::MyTexture(const char* path, unsigned int slot)
     : textureImageFilePath(path), textureSlot(slot)
 {
     int width, height, nChannels;
@@ -26,7 +26,7 @@ Texture::Texture(const char* path, unsigned int slot)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void Texture::bindToShader(unsigned int shader, const char* uniform)
+void MyTexture::bindToShader(unsigned int shader, const char* uniform)
 {
     glUniform1i(glGetUniformLocation(shader, uniform), this->textureSlot);
 }

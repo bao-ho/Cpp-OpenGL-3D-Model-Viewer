@@ -1,11 +1,11 @@
 #pragma once
 
-class Texture
+class MyTexture
 {
 private:
 	unsigned int textureSlot;
 	const char* textureImageFilePath;
 public:
-	Texture(const char* path, unsigned int slot);
+	MyTexture(const char* path, unsigned int slot);
 	void bindToShader(unsigned int shader, const char* uniform);
 };
